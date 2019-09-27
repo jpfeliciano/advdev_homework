@@ -37,19 +37,17 @@ items:
     name: "tasks-pipeline"
   spec:
     source:
+      contextDir: "openshift-tasks"
       type: "Git"
       git:
-        uri: "${REPO}/tree/master/openshift-tasks"
+        ref: "master"
+        uri: "${REPO}"
     strategy:
       type: "JenkinsPipeline"
       jenkinsPipelineStrategy:
         jenkinsfilePath: Jenkinsfile
 kind: List
 metadata: []" | oc create -f - -n ${GUID}-jenkins
-
-oc secrets new-basicauth github-secret --username=jpfeliciano --password=Jpfb#81 -n ${GUID}-jenkins
-
-oc set build-secret --source bc/tasks-pipeline github-secret -n ${GUID}-jenkins
 
 # Make sure that Jenkins is fully up and running before proceeding!
 while : ; do
